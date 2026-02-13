@@ -1,0 +1,537 @@
+/* ============================================== */
+/* RESET & BASE STYLES */
+/* ============================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Comic Sans MS', 'Arial', sans-serif;
+    min-height: 100vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* ============================================== */
+/* THEME VARIABLES */
+/* ============================================== */
+
+/* KUROMI THEME (Default) */
+body[data-theme="kuromi"] {
+    background: linear-gradient(135deg, #2d1b3d 0%, #1a0f2e 100%);
+    --primary-color: #e91e63;
+    --secondary-color: #ff4081;
+    --accent-color: #f06292;
+    --dark-color: #1a0f2e;
+    --light-color: #fce4ec;
+    --text-color: #ffffff;
+    --skull-color: #9c27b0;
+}
+
+/* BATMAN THEME */
+body[data-theme="batman"] {
+    background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%);
+    --primary-color: #ffd700;
+    --secondary-color: #ffed4e;
+    --accent-color: #ffc107;
+    --dark-color: #000000;
+    --light-color: #2c2c2c;
+    --text-color: #ffffff;
+    --skull-color: #ffd700;
+}
+
+/* PINK THEME */
+body[data-theme="pink"] {
+    background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #ffecd2 100%);
+    --primary-color: #ff1493;
+    --secondary-color: #ff69b4;
+    --accent-color: #ffb6c1;
+    --dark-color: #ff1493;
+    --light-color: #fff0f5;
+    --text-color: #ffffff;
+    --skull-color: #ff69b4;
+}
+
+/* CUSTOM THEME (will be set by JavaScript) */
+body[data-theme="custom"] {
+    /* Colors set dynamically */
+}
+
+/* ============================================== */
+/* ANIMATED BACKGROUND DECORATIONS */
+/* ============================================== */
+
+body::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.05) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.05) 0%, transparent 50%);
+    animation: pulseBackground 8s ease-in-out infinite;
+    pointer-events: none;
+}
+
+@keyframes pulseBackground {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+/* ============================================== */
+/* SCREEN MANAGEMENT */
+/* ============================================== */
+
+.screen {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    position: relative;
+    z-index: 1;
+}
+
+.screen.hidden {
+    display: none;
+}
+
+/* ============================================== */
+/* KUROMI DECORATIONS */
+/* ============================================== */
+
+.kuromi-decoration {
+    position: absolute;
+    top: 50px;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.kuromi-character {
+    font-size: 80px;
+    animation: float 3s ease-in-out infinite;
+    filter: drop-shadow(0 0 20px var(--primary-color));
+}
+
+.skull-decoration {
+    font-size: 60px;
+    animation: float 3s ease-in-out infinite 0.5s;
+    filter: drop-shadow(0 0 20px var(--skull-color));
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px) rotate(0deg);
+    }
+    50% {
+        transform: translateY(-20px) rotate(5deg);
+    }
+}
+
+/* ============================================== */
+/* TYPOGRAPHY */
+/* ============================================== */
+
+.main-title {
+    font-size: clamp(2rem, 8vw, 4rem);
+    color: var(--text-color);
+    text-align: center;
+    margin-bottom: 20px;
+    text-shadow: 
+        0 0 20px var(--primary-color),
+        0 0 40px var(--primary-color),
+        0 0 60px var(--primary-color);
+    font-weight: bold;
+    z-index: 2;
+}
+
+.subtitle {
+    font-size: clamp(1rem, 3vw, 1.5rem);
+    color: var(--accent-color);
+    margin-bottom: 50px;
+    text-align: center;
+    font-style: italic;
+    z-index: 2;
+}
+
+.success-title {
+    font-size: clamp(2.5rem, 10vw, 5rem);
+    color: var(--text-color);
+    text-align: center;
+    margin-bottom: 40px;
+    text-shadow: 
+        0 0 30px var(--primary-color),
+        0 0 60px var(--primary-color);
+    font-weight: bold;
+    z-index: 2;
+}
+
+/* ============================================== */
+/* BUTTONS */
+/* ============================================== */
+
+.buttons-container {
+    display: flex;
+    gap: 30px;
+    flex-wrap: wrap;
+    justify-content: center;
+    z-index: 2;
+}
+
+button {
+    position: relative;
+    padding: 20px 60px;
+    font-size: clamp(1.2rem, 4vw, 2rem);
+    font-weight: bold;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    overflow: hidden;
+    font-family: inherit;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+}
+
+.yes-btn {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    box-shadow: 
+        0 10px 30px rgba(255, 20, 147, 0.4),
+        0 0 40px var(--primary-color);
+}
+
+.yes-btn:hover,
+.yes-btn:active {
+    transform: scale(1.1) translateY(-5px);
+    box-shadow: 
+        0 15px 40px rgba(255, 20, 147, 0.6),
+        0 0 60px var(--primary-color);
+}
+
+.no-btn {
+    background: linear-gradient(135deg, #666, #999);
+    color: white;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    position: relative;
+}
+
+/* Button glow effect */
+.btn-glow {
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    transition: left 0.5s;
+}
+
+button:hover .btn-glow {
+    left: 100%;
+}
+
+/* ============================================== */
+/* HEARTS ANIMATION */
+/* ============================================== */
+
+.hearts-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.floating-heart {
+    position: absolute;
+    font-size: 20px;
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Hearts burst effect */
+.hearts-burst {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 10;
+}
+
+.burst-heart {
+    position: absolute;
+    font-size: 30px;
+    top: 50%;
+    left: 50%;
+}
+
+/* ============================================== */
+/* MESSAGE SCREEN */
+/* ============================================== */
+
+.message-content {
+    max-width: 900px;
+    width: 100%;
+    padding: 20px;
+    z-index: 2;
+}
+
+.love-letter {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 30px;
+    padding: 40px;
+    margin-bottom: 40px;
+    border: 2px solid var(--primary-color);
+    box-shadow: 
+        0 20px 60px rgba(0, 0, 0, 0.3),
+        0 0 40px var(--primary-color);
+}
+
+.letter-line {
+    font-size: clamp(1rem, 3vw, 1.5rem);
+    color: var(--text-color);
+    margin: 15px 0;
+    line-height: 1.8;
+    text-align: center;
+    opacity: 0;
+}
+
+.letter-line.signature {
+    margin-top: 40px;
+    font-style: italic;
+    color: var(--primary-color);
+    font-weight: bold;
+    font-size: clamp(1.2rem, 3.5vw, 1.8rem);
+}
+
+/* ============================================== */
+/* ASCII ART SECTION */
+/* ============================================== */
+
+.ascii-container {
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(10px);
+    border-radius: 30px;
+    padding: 30px;
+    border: 2px solid var(--accent-color);
+    box-shadow: 
+        0 20px 60px rgba(0, 0, 0, 0.5),
+        0 0 40px var(--accent-color);
+}
+
+.ascii-title {
+    font-size: clamp(1.2rem, 4vw, 2rem);
+    color: var(--primary-color);
+    text-align: center;
+    margin-bottom: 20px;
+    font-weight: bold;
+    text-shadow: 0 0 20px var(--primary-color);
+}
+
+.ascii-art {
+    font-family: monospace;
+    font-size: clamp(0.15rem, 0.4vw, 0.35rem);
+    color: var(--text-color);
+    line-height: 1;
+    white-space: pre;
+    overflow-x: auto;
+    text-align: left;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 20px;
+    border-radius: 15px;
+    max-height: 60vh;
+    overflow-y: auto;
+}
+
+/* ============================================== */
+/* SCROLLBAR STYLING */
+/* ============================================== */
+
+.ascii-art::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+.ascii-art::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+}
+
+.ascii-art::-webkit-scrollbar-thumb {
+    background: var(--primary-color);
+    border-radius: 10px;
+}
+
+.ascii-art::-webkit-scrollbar-thumb:hover {
+    background: var(--secondary-color);
+}
+
+/* ============================================== */
+/* MOBILE RESPONSIVE */
+/* ============================================== */
+
+@media (max-width: 768px) {
+    .kuromi-character {
+        font-size: 50px;
+    }
+    
+    .skull-decoration {
+        font-size: 40px;
+    }
+    
+    .buttons-container {
+        flex-direction: column;
+        gap: 20px;
+    }
+    
+    button {
+        padding: 15px 50px;
+        width: 100%;
+        max-width: 300px;
+    }
+    
+    .love-letter {
+        padding: 25px;
+    }
+    
+    .ascii-container {
+        padding: 20px;
+    }
+    
+    .ascii-art {
+        font-size: 0.2rem;
+        padding: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .kuromi-decoration {
+        top: 30px;
+    }
+    
+    .kuromi-character {
+        font-size: 40px;
+    }
+    
+    .skull-decoration {
+        font-size: 30px;
+    }
+    
+    .love-letter {
+        padding: 20px;
+    }
+    
+    .ascii-art {
+        font-size: 0.18rem;
+        max-height: 50vh;
+    }
+}
+
+/* ============================================== */
+/* TOUCH DEVICE IMPROVEMENTS */
+/* ============================================== */
+
+@media (hover: none) and (pointer: coarse) {
+    button:active {
+        transform: scale(0.95);
+    }
+    
+    .yes-btn:active {
+        transform: scale(1.05) translateY(-3px);
+    }
+}
+
+/* ============================================== */
+/* LOADING ANIMATION */
+/* ============================================== */
+
+@keyframes shimmer {
+    0% {
+        background-position: -1000px 0;
+    }
+    100% {
+        background-position: 1000px 0;
+    }
+}
+
+.loading {
+    background: linear-gradient(
+        90deg,
+        transparent 0%,
+        var(--primary-color) 50%,
+        transparent 100%
+    );
+    background-size: 1000px 100%;
+    animation: shimmer 2s infinite;
+}
+
+/* ============================================== */
+/* PARTICLE EFFECTS */
+/* ============================================== */
+
+.particle {
+    position: fixed;
+    width: 10px;
+    height: 10px;
+    background: var(--primary-color);
+    border-radius: 50%;
+    pointer-events: none;
+    box-shadow: 0 0 10px var(--primary-color);
+}
+
+/* ============================================== */
+/* UTILITY CLASSES */
+/* ============================================== */
+
+.text-glow {
+    text-shadow: 
+        0 0 10px var(--primary-color),
+        0 0 20px var(--primary-color),
+        0 0 30px var(--primary-color);
+}
+
+.fade-in {
+    animation: fadeIn 1s ease-in forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.pulse {
+    animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}

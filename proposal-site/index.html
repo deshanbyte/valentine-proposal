@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Will You Be My Valentine? 💕</title>
+    
+    <!-- GSAP Library for smooth animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/TextPlugin.min.js"></script>
+    
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- ============================================== -->
+    <!-- INITIAL QUESTION SCREEN -->
+    <!-- ============================================== -->
+    <div class="screen" id="questionScreen">
+        <div class="kuromi-decoration">
+            <div class="kuromi-character">🖤</div>
+            <div class="skull-decoration">💀</div>
+        </div>
+        
+        <h1 class="main-title" id="mainTitle">Will You Be My Valentine? 💕</h1>
+        
+        <div class="subtitle" id="subtitle">
+            Choose wisely... 😈
+        </div>
+        
+        <div class="buttons-container">
+            <button class="yes-btn" id="yesBtn">
+                <span class="btn-text">YES ❤️</span>
+                <span class="btn-glow"></span>
+            </button>
+            
+            <button class="no-btn" id="noBtn">
+                <span class="btn-text">NO 🖤</span>
+            </button>
+        </div>
+        
+        <!-- Floating hearts container -->
+        <div class="hearts-container" id="heartsContainer"></div>
+    </div>
+
+    <!-- ============================================== -->
+    <!-- SUCCESS MESSAGE SCREEN -->
+    <!-- ============================================== -->
+    <div class="screen hidden" id="messageScreen">
+        <div class="success-animation">
+            <div class="hearts-burst" id="heartsBurst"></div>
+        </div>
+        
+        <h1 class="success-title" id="successTitle">
+            I KNEW IT! 💖
+        </h1>
+        
+        <div class="message-content">
+            <!-- Editable love message -->
+            <div class="love-letter">
+                <div class="letter-line" id="line1">I don't remember the exact dates, not when we first texted, not even the first time we said I love you. But I remember the feeling. And that feeling changed everything for me.</div>
+                <div class="letter-line" id="line2">That red scarf I gave you, like Mikasa's, wasn't random. It wasn't just a gift. It was my way of saying I choose you. I protect you. I stand with you.</div>
+                <div class="letter-line" id="line3">Even from a distance, I have been fighting for your dreams like they are my own. Supporting your hopes. Believing in you when you doubt yourself.</div>
+                <div class="letter-line" id="line4">I may forget dates, but I will never forget your birthday. I use it every day because the day you were born truly matters to me.</div>
+                <div class="letter-line" id="line5">We haven't met yet, but what I feel is real. Strong. Unshaken.</div>
+                <div class="letter-line" id="line6">So here I am, not half hearted, not unsure.</div>
+                <div class="letter-line signature" id="line7">Will you choose me the way I choose you? ❤️</div>
+            </div>
+            
+            <!-- ASCII Art Container -->
+            <div class="ascii-container">
+                <div class="ascii-title">✨ The Most Beautiful Girl ✨</div>
+                <pre class="ascii-art" id="asciiArt"></pre>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================== -->
+    <!-- AUDIO ELEMENTS -->
+    <!-- ============================================== -->
+    
+    <!-- Background music for question screen (funny/intense) -->
+    <audio id="bgMusic" loop>
+        <source src="assets/music/background.mp3" type="audio/mpeg">
+    </audio>
+    
+    <!-- Music plays when YES is clicked (romantic) -->
+    <audio id="yesMusic" loop>
+        <source src="assets/music/yes-song.mp3" type="audio/mpeg">
+    </audio>
+    
+    <!-- Sound effect when NO button is clicked/hovered -->
+    <audio id="noSound">
+        <source src="assets/music/no-sound.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- ============================================== -->
+    <!-- CONFIGURATION SCRIPT -->
+    <!-- This is where you customize everything! -->
+    <!-- ============================================== -->
+    <script>
+        // ========================================
+        // 🎨 CUSTOMIZATION SECTION
+        // Edit these values to personalize!
+        // ========================================
+        
+        const CONFIG = {
+            // THEME: Choose your theme
+            // Options: 'kuromi', 'batman', 'pink', 'custom'
+            theme: 'kuromi',
+            
+            // CUSTOM COLORS (only used if theme is 'custom')
+            colors: {
+                primary: '#FF1493',      // Main pink color
+                secondary: '#FFB6C1',    // Light pink
+                accent: '#FF69B4',       // Hot pink
+                dark: '#1a1a1a',         // Dark background
+                text: '#ffffff'          // Text color
+            },
+            
+            // MUSIC FILES
+            // Put your music files in assets/music/ folder
+            music: {
+                background: 'assets/music/background.mp3',  // Funny music for question screen
+                yesMusic: 'assets/music/yes-song.mp3',      // Romantic music after YES
+                noSound: 'assets/music/no-sound.mp3'        // Sound when NO is clicked
+            },
+            
+            // TEXT CUSTOMIZATION
+            text: {
+                mainTitle: 'Will You Be My Valentine? 💕',
+                subtitle: 'Choose wisely... 😈',
+                successTitle: 'I KNEW IT! 💖',
+                
+                // Love letter lines (edit each line)
+                loveLetter: [
+                    "I don't remember the exact dates, not when we first texted, not even the first time we said I love you. But I remember the feeling. And that feeling changed everything for me.",
+                    "That red scarf I gave you, like Mikasa's, wasn't random. It wasn't just a gift. It was my way of saying I choose you. I protect you. I stand with you.",
+                    "Even from a distance, I have been fighting for your dreams like they are my own. Supporting your hopes. Believing in you when you doubt yourself.",
+                    "I may forget dates, but I will never forget your birthday. I use it every day because the day you were born truly matters to me.",
+                    "We haven't met yet, but what I feel is real. Strong. Unshaken.",
+                    "So here I am, not half hearted, not unsure.",
+                    "Will you choose me the way I choose you? ❤️"
+                ]
+            },
+            
+            // ANIMATION SETTINGS
+            animation: {
+                noButtonSpeed: 0.3,        // How fast NO button moves (0.1-1)
+                heartsCount: 20,           // Number of floating hearts (10-50)
+                asciiSpeed: 5,             // ASCII art reveal speed (1-10, higher = faster)
+                enableParticles: true      // Show particle effects
+            }
+        };
+    </script>
+
+    <!-- Main JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>
